@@ -6,15 +6,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 
-# ----------------------------
+
 # LOAD DATA
-# ----------------------------
-# IMPORTANT: Make sure this CSV is inside your GitHub repo
+
 data = pd.read_csv(r"C:\Users\DELL 7240\OneDrive\Documents\Financial gmc\Financial_inclusion_dataset (1).csv")
 
-# ----------------------------
 # ENCODING
-# ----------------------------
+
 data["country_Encoded"] = data["country"].map({"Rwanda":0, "Tanzania":1, "Kenya":2, "Uganda": 3})
 data["bank_account_encoded"] = data["bank_account"].map({"No":0, "Yes":1})
 data["location_type_encoded"] = data["location_type"].map({"Rural":0, "Urban":1})
@@ -38,18 +36,17 @@ X = data[['country_Encoded','location_type_encoded','cellphone_access_Encoded',
           'education_level_Encoded','job_type_Encoded']]
 y = data["bank_account_encoded"]
 
-# ----------------------------
+
 # TRAIN MODEL
-# ----------------------------
+
 scalar = StandardScaler()
 X_scaled = scalar.fit_transform(X)
 
 LR_model = LogisticRegression(max_iter=2000)
 LR_model.fit(X_scaled, y)
 
-# ----------------------------
 # STREAMLIT UI
-# ----------------------------
+
 st.title("Bank Account Prediction App")
 st.subheader("Predict individuals most likely to have or use a bank account")
 st.text("Dataset includes demographic and financial service information across East Africa.")
@@ -102,7 +99,7 @@ if st.button("Validate"):
     prediction = LR_model.predict(input_scaled)
 
     if prediction == 1:
-        st.success("🎉 This person is likely to have or use a bank account!")
+        st.success(" This person is likely to have or use a bank account!")
         st.balloons()
     else:
-        st.error("🚫 This person is NOT likely to have or use a bank account.")
+        st.error("This person is NOT likely to have or use a bank account.")
