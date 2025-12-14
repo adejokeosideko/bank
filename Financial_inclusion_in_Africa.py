@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import pickle
+
+
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
@@ -44,6 +47,13 @@ X_scaled = scalar.fit_transform(X)
 
 LR_model = LogisticRegression(max_iter=2000)
 LR_model.fit(X_scaled, y)
+
+# loading the pickle modle
+with open("C:/Users/DELL 7240/OneDrive/Documents/Financial gmc/LR_model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+
+
 
 # STREAMLIT UI
 
@@ -96,10 +106,11 @@ input_df = pd.DataFrame({
 # VALIDATE BUTTON
 if st.button("Validate"):
     input_scaled = scalar.transform(input_df)
-    prediction = LR_model.predict(input_scaled)
+    prediction = model.predict(input_scaled)  # use scaled input
 
     if prediction == 1:
-        st.success(" This person is likely to have or use a bank account!")
+        st.success("This person is likely to have or use a bank account!")
         st.balloons()
     else:
         st.error("This person is NOT likely to have or use a bank account.")
+
